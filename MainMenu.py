@@ -4,18 +4,20 @@ def open_form1():
     root = tk.Tk()
     root.title("Меню")
 
-    # Задаем теплый бежевый цвет фона окна
-    bg_color = '#f5f5dc'
-    button_bg_color = '#e2725b'  # Терракотовый цвет для кнопок
+    #цвет фона окна
+    bg_color = '#ffcbdb'
+    button_bg_color = '#de5d83' 
     button_fg_color = 'white'  # Цвет текста на кнопках - белый
     button_font = ('Arial', 14)  # Шрифт и размер текста на кнопках
+
+
 
     root.configure(bg=bg_color)
 
     window_width = 750
     window_height = 850
 
-    # Получаем размеры экрана
+    #размеры экрана
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
 
@@ -29,6 +31,10 @@ def open_form1():
     # Фрейм для размещения кнопок по центру
     frame = tk.Frame(root, bg=bg_color)
     frame.pack(expand=True)
+
+    # Добавляем заголовок "Тетрис"
+    title = tk.Label(frame, text="ТЕТРИС", bg=bg_color, fg=button_bg_color, font='Arial' )
+    title.pack(side=tk.TOP, pady=(20, 10))
 
     # Функция закрытия окна form1
     def close_form1():
