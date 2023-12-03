@@ -116,7 +116,7 @@ def set_record(record, score):
     with open('record', 'w') as f:
         f.write(str(rec))
 
-#Основой код программы
+#Основой цикл программы
 
 while True:
     record = get_record()
