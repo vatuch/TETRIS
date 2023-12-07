@@ -1,8 +1,6 @@
 import sys
 import tkinter as tk
-from _ast import Lambda
 import sqlite3
-from tkinter import messagebox
 import pygame
 from copy import deepcopy
 from random import choice, randrange
@@ -11,8 +9,6 @@ from random import choice, randrange
 def login():
     username = entry_username.get()
     password = entry_password.get()
-
-    # Проверка данных в базе данных
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
@@ -47,9 +43,12 @@ def register():
 
     message_label.configure(text="Успешно зарегистрирован!")
 
-
 root = tk.Tk()
 root.overrideredirect(1)
+bg_color = '#ffcbdb'
+button_bg_color = '#de5d83'
+button_fg_color = 'white'
+button_font = ('Gilroy', 14)
 window_width1 = 750
 window_height1 = 850
 screen_width = root.winfo_screenwidth()
@@ -57,29 +56,75 @@ screen_height = root.winfo_screenheight()
 x = int((screen_width / 2) - (window_width1 / 2))
 y = int((screen_height / 2) - (window_height1 / 2))
 root.geometry(f'{window_width1}x{window_height1}+{x}+{y}')
-message_label = tk.Label(root, text="",font='Gilroy')
+
+root.config(bg=bg_color)
+message_label = tk.Label(root, text="", font='Gilroy')
 message_label.pack(side=tk.TOP, pady=(250, 10))
-label_username = tk.Label(root, text="Введите имя пользователя")
+
+label_username = tk.Label(root, text="Введите имя пользователя", font='Gilroy', bg=bg_color, fg='#de5d83')
 label_username.pack()
 entry_username = tk.Entry(root)
 entry_username.pack()
 
-label_password = tk.Label(root, text="Введите пароль")
+label_password = tk.Label(root, text="Введите пароль", font='Gilroy', bg=bg_color, fg='#de5d83')
 label_password.pack()
 entry_password = tk.Entry(root, show="*")
 entry_password.pack()
 
-button_login = tk.Button(root, text="Войти", command=login)
-button_login.pack()
+button_login = tk.Button(root, text="Войти", command=login, font='Gilroy', width=20, bg=button_bg_color,
+                         fg=button_fg_color)
+button_login.pack(padx=5, pady=10)
 
-button_register = tk.Button(root, text="Зарегистрироваться", command=register)
-button_register.pack()
+button_register = tk.Button(root, text="Зарегистрироваться", command=register, font='Gilroy', width=20,
+                            bg=button_bg_color, fg=button_fg_color)
+button_register.pack(padx=5, pady=10)
 
-exit_button = tk.Button(root, text="Выйти", command=sys.exit)
+exit_button = tk.Button(root, text="Выйти", command=sys.exit, font='Gilroy', width=20, bg=button_bg_color,
+                        fg=button_fg_color)
 exit_button.pack(side=tk.TOP, pady=10)
 root.mainloop()
 
-def open_form1(username):
+
+def rectate():
+    with open('record', 'r') as f:
+        content = f.read()
+        recc = tk.Tk()
+        recc.overrideredirect(1)
+        bg_color = '#ffcbdb'
+        button_bg_color = '#de5d83'
+        button_fg_color = 'white'
+        button_font = ('Gilroy', 14)
+
+        recc.configure(bg=bg_color)
+
+        current_record = 0
+        window_width = 750
+        window_height = 850
+        screen_width = recc.winfo_screenwidth()
+        screen_height = recc.winfo_screenheight()
+        x = int((screen_width / 2) - (window_width / 2))
+        y = int((screen_height / 2) - (window_height / 2))
+        recc.geometry(f'{window_width}x{window_height}+{x}+{y}')
+        frame = tk.Frame(recc, bg=bg_color)
+        frame.pack(expand=True)
+
+        title = tk.Label(recc, text=f"Самый большой счет:", bg=bg_color, fg=button_bg_color, font='Gilroy')
+        title.pack(side=tk.TOP, pady=(20, 10))
+
+        recctit = tk.Label(recc, text="", bg=bg_color, fg=button_bg_color, font='Gilroy')
+        recctit.pack(side=tk.TOP, pady=(20, 10))
+
+        recctit.config(text=content)  # Добавляем эту строку
+
+        def close_recc():
+            recc.destroy()
+
+        exit_button = tk.Button(recc, text="Выйти", command=close_recc,
+                                bg=button_bg_color, fg=button_fg_color, font=button_font, height=2, width=20)
+        exit_button.pack(side=tk.TOP, pady=10)
+
+
+def open_form1():
     root = tk.Tk()
     root.overrideredirect(1)
     root.title("Tetris Game")
@@ -90,6 +135,7 @@ def open_form1(username):
 
     root.configure(bg=bg_color)
 
+    current_record = 0
     window_width = 750
     window_height = 850
     screen_width = root.winfo_screenwidth()
@@ -101,12 +147,8 @@ def open_form1(username):
     frame = tk.Frame(root, bg=bg_color)
     frame.pack(expand=True)
 
-    title = tk.Label(frame, text=f"ТЕТРИС", bg=bg_color, fg=button_bg_color, font='Gilroy')
-    title.pack(side=tk.TOP, pady=(20, 10))
-
-    title = tk.Label(frame, text=f"Name: {username}", bg=bg_color, fg=button_bg_color, font='Gilroy')
-    title.pack(side=tk.TOP, pady=(20, 10))
-
+    title = tk.Label(frame, text=f"TETRIS GAME", bg=bg_color, fg=button_bg_color, font=('Dance', 54))
+    title.pack(side=tk.TOP, pady=(20, 20))
 
     def close_form1():
         root.destroy()
@@ -115,7 +157,7 @@ def open_form1(username):
                        bg=button_bg_color, fg=button_fg_color, font=button_font, height=2, width=20)
     button.pack(side=tk.TOP, pady=10)
 
-    record_button = tk.Button(frame, text="Таблица рекордов ", command=sys.exit,
+    record_button = tk.Button(frame, text="Таблица рекордов ", command=rectate,
                               bg=button_bg_color, fg=button_fg_color, font=button_font, height=2, width=20)
     record_button.pack(side=tk.TOP, pady=10)
 
@@ -123,86 +165,78 @@ def open_form1(username):
                             bg=button_bg_color, fg=button_fg_color, font=button_font, height=2, width=20)
     exit_button.pack(side=tk.TOP, pady=10)
 
-
-
+    root.mainloop()
+    root.mainloop()
     root.mainloop()
 
-    root.mainloop()
 
 if __name__ == '__main__':
-    username = "{username}"  # нужно будет ИЗМЕНИТЬ!!!!
-    open_form1(username)
+    open_form1()
 
-    # Создание игрового поля заданного разрешения
-    width, height = 10, 18  # Ширина и высота в блоках
-    TILE = 45  # Размер одного блока
-    GAME_RES = width * TILE, height * TILE  # Разрешение игрового поля
-    RES = 750, 850  # Общее разрешение окна
 
-    FPS = 80  # Частота кадров в секунду (FPS)
+    width, height = 10, 18
+    TILE = 45
+    GAME_RES = width * TILE, height * TILE
+    RES = 950, 850
 
-    pygame.init()  # Инициализация всех импортированных модулей pygame
-    screen = pygame.display.set_mode(RES,pygame.NOFRAME) # Создание окна с заданным разрешением
-    game_sc = pygame.Surface(GAME_RES)  # Создание поверхности для игрового поля
-    clock = pygame.time.Clock()  # Создание объекта для отслеживания времени
+    FPS = 80
 
-    # Генерация сетки игрового поля
+    pygame.init()  #
+    screen = pygame.display.set_mode(RES, pygame.NOFRAME)
+    game_sc = pygame.Surface(GAME_RES)
+    clock = pygame.time.Clock()
     grid = [pygame.Rect(x * TILE, y * TILE, TILE, TILE) for x in range(width) for y in range(height)]
 
-    # Определение форм фигур
+
     figure_pos = [
-        [(-1, 0), (-2, 0), (0, 0), (1, 0)],  # Форма I
-        [(0, -1), (-1, -1), (-1, 0), (0, 0)],  # Форма Z
-        [(-1, 0), (-1, 1), (0, 0), (0, -1)],  # Форма S
-        [(0, 0), (-1, 0), (0, 1), (-1, -1)],  # Форма T
-        [(0, 0), (0, -1), (0, 1), (-1, 1)],  # Форма L
-        [(0, 0), (0, -1), (0, 1), (-1, -1)],  # Зеркальная форма L
-        [(0, 0), (0, -1), (0, 1), (-1, 0)]  # Форма O
+        [(-1, 0), (-2, 0), (0, 0), (1, 0)],
+        [(0, -1), (-1, -1), (-1, 0), (0, 0)],
+        [(-1, 0), (-1, 1), (0, 0), (0, -1)],
+        [(0, 0), (-1, 0), (0, 1), (-1, -1)],
+        [(0, 0), (0, -1), (0, 1), (-1, 1)],
+        [(0, 0), (0, -1), (0, 1), (-1, -1)],
+        [(0, 0), (0, -1), (0, 1), (-1, 0)]
     ]
 
-    # Создание фигур из координат
+
     figures = [[pygame.Rect(x + width // 2, y + 1, 1, 1) for x, y in figure_pos] for figure_pos in figure_pos]
     figure_rect = pygame.Rect(0, 0, TILE - 2, TILE - 2)
     field = [[0 for _ in range(width)] for _ in range(height)]
-
-    # Установки, связанные с падением фигур
     drop_count, drop_speed, drop_limit = 0, 45, 1000
 
     get_color = lambda: (
-    randrange(30, 256), randrange(30, 256), randrange(30, 256))  # Функция для получения случайного цвета
+        randrange(30, 256), randrange(30, 256), randrange(30, 256))
 
-    score, lines = 0, 0  # Текущий счет и количество полностью заполненных линий
-    scores = {0: 0, 1: 100, 2: 300, 3: 700, 4: 1500}  # Очки за уничтоженные линии
-    level = 1  # Уровень игры
+    score, lines = 0, 0
+    scores = {0: 0, 1: 100, 2: 300, 3: 700, 4: 1500}
+    level = 1
 
-    # Шрифты
     main_font = pygame.font.Font('Font\Gilroy-Regular.ttf', 30)
     font = pygame.font.Font('Font\Dance.ttf', 50)
 
-    # Текстовые элементы
+
     title_tetris = font.render('TETRIS', True, pygame.Color('#de5d83'))
     title_score = font.render('score:', True, pygame.Color('#ffeeed'))
 
-    # Загрузка фоновых изображений
+
     bg = pygame.image.load('image\Background_Second.jpg').convert()
     game_bg = pygame.image.load('image\Background_First.jpg').convert()
 
-    # Инициализация фигур и их цветов
+
     figure, next_figure = deepcopy(choice(figures)), deepcopy(choice(figures))
     color, next_color = get_color(), get_color()
 
-    # Дополнительные текстовые элементы
+
     title_record = font.render('record:', True, pygame.Color('#fffaf0'))
     title_level = font.render('level:', True, pygame.Color('#fffaf0'))
 
-    # Загрузка звуковых эффектов
+    title_image = pygame.image.load('image/avatar.jpg')
+
     sound = pygame.mixer.Sound("sound\Bonus.mp3")
     sound_game_over = pygame.mixer.Sound("sound\Game_Over.mp3")
+    main_sound = pygame.mixer.Sound("sound\Main_Sound.mp3")
 
-    # Переменная для управления паузой
     paused = False
-
-
 def draw_button(msg, x, y, width, height, color, hover_color):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -217,6 +251,7 @@ def draw_button(msg, x, y, width, height, color, hover_color):
     if button_rect.collidepoint(mouse) and click[0]:
         return True
     return False
+
 
 def draw_button_exit(msg, x, y, width, height, color, hover_color):
     mouse = pygame.mouse.get_pos()
@@ -243,8 +278,7 @@ def start_game():
     pygame.time.set_timer(pygame.USEREVENT, 1000)
 
 
-# функция отображения кнопки
-def draw_button_again (msg, x, y, width, height, color, hover_color):
+def draw_button_again(msg, x, y, width, height, color, hover_color):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
@@ -259,32 +293,34 @@ def draw_button_again (msg, x, y, width, height, color, hover_color):
         return True
     return False
 
+
 def save_record(score):
     record = get_record()
     if score > record:
         with open('record', 'w') as f:
             f.write(str(score))
 
+
 def restart_game():
     save_record(score)
     start_game()
 
+
 def draw_start_again_button():
-    if draw_button("Начать сначала", 480, 480, 260, 50, ('#de5d83'), ('#ffcbdb')):
+    if draw_button("Начать сначала", 480, 480, 260, 50, ('#ffcbdb'), ('#de5d83')):
         restart_game()
 
 def draw_button_exit():
     if draw_button("Выйти из игры", 480, 550, 260, 50, ('#ffcbdb'), ('#de5d83')):
         sys.exit()
-# проверка границ
+
+
 def check_borders():
     if figure[i].x < 0 or figure[i].x > width - 1:
         return False
     elif figure[i].y > height - 1 or field[figure[i].y][figure[i].x]:
         return False
     return True
-
-
 
 def get_record():
     try:
@@ -295,26 +331,23 @@ def get_record():
             f.write('0')
         return 0
 
-
 def set_record(record, score):
     rec = max(record, int(score))
     with open('record', 'w') as f:
         f.write(str(rec))
 
-# Основой код программы
-
 while True:
+    #main_sound.play()
     record = get_record()
     dx, rorate = 0, False
     screen.blit(bg, (0, 0))
     screen.blit(game_sc, (20, 20))
     game_sc.blit(game_bg, (0, 0))
-    # задержка при линиях
 
     for i in range(lines):
         pygame.time.wait(200)
 
-    # изменения через клавиатуру
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
@@ -329,9 +362,14 @@ while True:
                 rorate = True
             elif event.key == pygame.K_ESCAPE:
                 paused = not paused
-    if not paused:
+                if paused:
+                    if paused:
+                        screen.fill((0, 0, 0))
+                        text_surface = font.render("Для снятия паузы нажмите Esc", True, ('#de5d83'))
+                        screen.blit(text_surface, (250, 250))
+                        pygame.display.update()
 
-        # передвежение вдоль оси x
+    if not paused:
         figure_old = deepcopy(figure)
         for i in range(4):
             if figure[i].x + dx < 0 or figure[i].x + dx >= width:
@@ -341,8 +379,6 @@ while True:
         if not check_borders():
             figure = deepcopy(figure_old)
             break
-
-        # передвижение вдоль оси y
 
         drop_count += drop_speed
         if drop_count > drop_limit:
@@ -358,7 +394,6 @@ while True:
                     drop_limit = 1000
                     break
 
-        # поворот фигур
         centre = figure[0]
         figure_old = deepcopy(figure)
         if rorate:
@@ -370,8 +405,6 @@ while True:
             if not check_borders():
                 figure = deepcopy(figure_old)
                 break
-
-        # удаление заполненной линии
 
         line, lines = height - 1, 0
         for row in range(height - 1, -1, -1):
@@ -388,40 +421,37 @@ while True:
                 if lines > 0:
                     sound.play()
 
-        # начисление очков
         score += scores[lines]
 
-        # проверка для уровня
-        if lines == 3:
+        if lines == 1:
             level = 2
             drop_speed += 10
-        elif lines == 10:
+        elif lines == 5:
             level = 3
-            drop_speed += 30
-        elif lines == 20:
+            drop_speed += 20
+        elif lines == 10:
             level = 4
-            drop_speed += 50
-        elif lines == 45:
+            drop_speed += 25
+        elif lines == 25:
             level = 5
-            drop_speed += 100
+            drop_speed += 30
 
-        # создание сетки
         [pygame.draw.rect(game_sc, (255, 255, 255), i_rect, 1) for i_rect in grid]  # отрисовка элементов с границами
 
-        # зарисовка фигуры
         for i in range(4):
             figure_rect.x = figure[i].x * TILE
             figure_rect.y = figure[i].y * TILE
             pygame.draw.rect(game_sc, color, figure_rect)
 
-        # заполнение
         for y, raw in enumerate(field):
             for x, col in enumerate(raw):
                 if col:
                     figure_rect.x, figure_rect.y = x * TILE, y * TILE
                     pygame.draw.rect(game_sc, col, figure_rect)
 
-        # следующая фигура
+        if score > record:
+            set_record(record, score)
+
         for i in range(4):
             figure_rect.x = next_figure[i].x * TILE + 390
             figure_rect.y = next_figure[i].y * TILE + 185
@@ -431,7 +461,6 @@ while True:
         draw_start_again_button()
         draw_button_exit()
 
-        # надписи
         pause_text = 'Продолжить' if paused else 'Пауза'
         if draw_button(pause_text, 480, RES[1] / 2 - 30, 260, 50, ('#ffcbdb'), ('#de5d83')):
             paused = not paused
@@ -443,9 +472,22 @@ while True:
         screen.blit(main_font.render(str(score), True, pygame.Color('white')), (515, 790))
         screen.blit(title_record, (515, 630))
         screen.blit(main_font.render(str(record), True, pygame.Color('white')), (515, 700))
+        screen.blit(title_image, (780, 15))
+        title_image = pygame.transform.scale(title_image, (130, 128))
+        font = pygame.font.Font('Font/Gilroy-Regular.ttf', 25)
 
-        # конец игры
-        # достижение границы поля
+
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM users WHERE username = 'Player'")
+        result = cursor.fetchone()
+        conn.close()
+        text = font.render(result[0], 'Example Text', True, )
+
+        text_rect = text.get_rect(center=(850, 160))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+
         for i in range(width):
             if field[0][i]:
                 set_record(record, score)
